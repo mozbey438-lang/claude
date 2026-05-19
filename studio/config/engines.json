@@ -1,0 +1,14 @@
+{
+  "godot": {
+    "executable": "C:/Program Files/Godot/Godot_v4.3.exe",
+    "version": "4.3"
+  },
+  "unreal": {
+    "executable": "C:/Program Files/Epic Games/UE_5.4/Engine/Binaries/Win64/UnrealEditor-Cmd.exe",
+    "version": "5.4"
+  },
+  "unity": {
+    "executable": "C:/Program Files/Unity/Hub/Editor/2022.3.0f1/Editor/Unity.exe",
+    "version": "2022.3"
+  }
+}
