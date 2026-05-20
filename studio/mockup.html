@@ -3,452 +3,429 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Studio — Mockup</title>
+<title>Studio</title>
 <style>
-  * { box-sizing: border-box; margin: 0; padding: 0; }
-  body { font-family: 'Segoe UI', system-ui, sans-serif; background: #0a0a0a; color: #e0e0e0; height: 100vh; display: flex; flex-direction: column; overflow: hidden; }
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap');
 
-  /* TOP BAR */
-  .topbar {
-    height: 42px;
-    background: #111;
-    border-bottom: 1px solid #1e1e1e;
-    display: flex;
-    align-items: center;
-    padding: 0 16px;
-    gap: 12px;
+  :root {
+    --bg0: #06060e;
+    --bg1: #0a0a14;
+    --bg2: #0f0f1a;
+    --bg3: #141420;
+    --border: #1a1a2e;
+    --border2: #22223a;
+    --accent: #7b70f0;
+    --accent-dim: #3d3878;
+    --accent-glow: rgba(123,112,240,0.15);
+    --green: #34d399;
+    --green-dim: rgba(52,211,153,0.1);
+    --yellow: #fbbf24;
+    --red: #f87171;
+    --text1: #e2e2f0;
+    --text2: #8888aa;
+    --text3: #44445a;
+    --mono: 'JetBrains Mono', monospace;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body { height: 100%; overflow: hidden; }
+  body {
+    font-family: 'Inter', system-ui, sans-serif;
+    background: var(--bg0);
+    color: var(--text1);
+    font-size: 13px;
+  }
+
+  /* ─── LAYOUT ─── */
+  .shell { display: flex; flex-direction: column; height: 100vh; }
+  .mid   { display: flex; flex: 1; overflow: hidden; }
+
+  /* ─── TOP BAR ─── */
+  .bar {
+    height: 40px;
+    background: var(--bg1);
+    border-bottom: 1px solid var(--border);
+    display: flex; align-items: center;
+    padding: 0 14px; gap: 10px;
     flex-shrink: 0;
   }
-  .logo { font-size: 13px; font-weight: 700; color: #7c6af7; letter-spacing: 2px; }
-  .topbar-sep { width: 1px; height: 16px; background: #222; }
-  .project-name { font-size: 12px; color: #888; }
-  .project-name span { color: #ccc; }
-  .topbar-right { margin-left: auto; display: flex; align-items: center; gap: 8px; }
-  .status-dot { width: 6px; height: 6px; border-radius: 50%; }
-  .dot-green { background: #4ade80; box-shadow: 0 0 6px #4ade8066; }
-  .dot-yellow { background: #facc15; box-shadow: 0 0 6px #facc1566; }
-  .dot-red { background: #f87171; }
-  .dot-gray { background: #444; }
-  .status-label { font-size: 11px; color: #555; }
+  .logo {
+    font-size: 11px; font-weight: 600; letter-spacing: 3px;
+    color: var(--accent); font-family: var(--mono);
+  }
+  .bar-div { width: 1px; height: 14px; background: var(--border2); }
+  .breadcrumb { font-size: 11px; color: var(--text3); }
+  .breadcrumb b { color: var(--text2); font-weight: 500; }
+  .bar-right { margin-left: auto; display: flex; align-items: center; gap: 14px; }
+  .chip {
+    display: flex; align-items: center; gap: 5px;
+    font-size: 10px; color: var(--text3); font-family: var(--mono);
+  }
+  .dot { width: 5px; height: 5px; border-radius: 50%; flex-shrink: 0; }
+  .d-on  { background: var(--green); box-shadow: 0 0 8px var(--green); }
+  .d-warn{ background: var(--yellow); box-shadow: 0 0 8px var(--yellow); }
+  .d-off { background: var(--text3); }
 
-  /* MAIN LAYOUT */
-  .main { display: flex; flex: 1; overflow: hidden; }
-
-  /* SIDEBAR */
+  /* ─── SIDEBAR ─── */
   .sidebar {
-    width: 52px;
-    background: #0f0f0f;
-    border-right: 1px solid #1a1a1a;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    padding: 12px 0;
-    gap: 4px;
+    width: 48px;
+    background: var(--bg1);
+    border-right: 1px solid var(--border);
+    display: flex; flex-direction: column;
+    align-items: center; padding: 10px 0; gap: 2px;
   }
-  .nav-btn {
-    width: 36px; height: 36px;
-    border-radius: 8px;
-    border: none;
-    background: none;
-    color: #444;
-    cursor: pointer;
+  .sb-btn {
+    width: 32px; height: 32px; border-radius: 7px;
+    border: none; background: none; cursor: pointer;
     display: flex; align-items: center; justify-content: center;
-    font-size: 16px;
-    transition: all 0.15s;
-    position: relative;
+    font-size: 15px; color: var(--text3);
+    transition: all .15s; position: relative;
   }
-  .nav-btn:hover { background: #1a1a1a; color: #888; }
-  .nav-btn.active { background: #1c1830; color: #7c6af7; }
-  .nav-btn .tooltip {
-    position: absolute; left: 52px;
-    background: #1e1e1e; border: 1px solid #2a2a2a;
-    color: #ccc; font-size: 11px; padding: 4px 8px;
-    border-radius: 4px; white-space: nowrap;
-    opacity: 0; pointer-events: none;
-    transition: opacity 0.15s;
+  .sb-btn:hover { background: var(--bg3); color: var(--text2); }
+  .sb-btn.on  { background: var(--accent-glow); color: var(--accent); }
+  .sb-btn .tip {
+    position: absolute; left: 42px; top: 50%; transform: translateY(-50%);
+    background: var(--bg3); border: 1px solid var(--border2);
+    color: var(--text1); font-size: 10px; padding: 3px 7px;
+    border-radius: 4px; white-space: nowrap; pointer-events: none;
+    opacity: 0; transition: opacity .1s; z-index: 99;
+    font-family: var(--mono);
   }
-  .nav-btn:hover .tooltip { opacity: 1; }
-  .sidebar-bottom { margin-top: auto; }
+  .sb-btn:hover .tip { opacity: 1; }
+  .sb-foot { margin-top: auto; }
 
-  /* LEFT PANEL */
-  .left-panel {
-    width: 240px;
-    background: #0d0d0d;
-    border-right: 1px solid #1a1a1a;
-    display: flex;
-    flex-direction: column;
+  /* ─── LEFT PANEL ─── */
+  .lpanel {
+    width: 230px;
+    background: var(--bg1);
+    border-right: 1px solid var(--border);
+    display: flex; flex-direction: column;
+    overflow: hidden;
   }
-  .panel-header {
-    padding: 14px 16px 10px;
-    font-size: 10px;
-    font-weight: 600;
-    letter-spacing: 1.5px;
-    color: #444;
-    text-transform: uppercase;
-    border-bottom: 1px solid #161616;
+  .ph {
+    padding: 12px 14px 8px;
+    font-size: 9px; font-weight: 600; letter-spacing: 1.8px;
+    color: var(--text3); text-transform: uppercase;
+    border-bottom: 1px solid var(--border);
     display: flex; align-items: center; justify-content: space-between;
   }
-  .panel-header button {
-    background: none; border: none; color: #444; cursor: pointer; font-size: 16px; line-height: 1;
-    transition: color 0.15s;
+  .ph-add {
+    width: 18px; height: 18px; border-radius: 4px;
+    border: 1px solid var(--border2); background: none;
+    color: var(--text3); cursor: pointer; font-size: 13px;
+    display: flex; align-items: center; justify-content: center;
+    transition: all .15s;
   }
-  .panel-header button:hover { color: #7c6af7; }
+  .ph-add:hover { border-color: var(--accent-dim); color: var(--accent); }
 
-  .project-list { padding: 8px; flex: 1; overflow-y: auto; }
-  .project-item {
-    padding: 8px 10px;
-    border-radius: 6px;
-    cursor: pointer;
-    display: flex; align-items: center; gap: 10px;
-    transition: background 0.1s;
-    margin-bottom: 2px;
+  .plist { flex: 1; overflow-y: auto; padding: 6px; }
+  .pi {
+    padding: 7px 9px; border-radius: 6px; cursor: pointer;
+    display: flex; align-items: center; gap: 9px;
+    transition: background .1s; margin-bottom: 1px;
   }
-  .project-item:hover { background: #161616; }
-  .project-item.active { background: #1c1830; }
-  .project-icon { font-size: 14px; opacity: 0.7; }
-  .project-info { flex: 1; min-width: 0; }
-  .project-title { font-size: 12px; color: #ccc; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-  .project-meta { font-size: 10px; color: #444; margin-top: 1px; }
-  .project-item.active .project-title { color: #a89cf7; }
+  .pi:hover { background: var(--bg3); }
+  .pi.on  { background: var(--accent-glow); }
+  .pi-ico { font-size: 13px; opacity: .8; flex-shrink: 0; }
+  .pi-name { font-size: 11px; color: var(--text2); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .pi-sub  { font-size: 9px; color: var(--text3); margin-top: 1px; font-family: var(--mono); }
+  .pi.on .pi-name { color: #a89cf7; }
 
-  /* CENTER */
-  .center { flex: 1; display: flex; flex-direction: column; overflow: hidden; }
+  /* job card */
+  .jcard {
+    margin: 6px 10px;
+    background: var(--bg2); border: 1px solid var(--border);
+    border-radius: 7px; padding: 9px 10px;
+  }
+  .jtop { display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px; }
+  .jtitle { font-size: 10px; color: var(--text2); }
+  .jpct   { font-size: 10px; color: var(--accent); font-family: var(--mono); }
+  .pbar { height: 2px; background: var(--bg3); border-radius: 1px; }
+  .pfill{ height: 100%; background: var(--accent); border-radius: 1px; }
+  .jmsg { font-size: 9px; color: var(--text3); margin-top: 5px; font-family: var(--mono); }
 
-  /* TABS */
+  /* props */
+  .sec { padding: 9px 14px 4px; font-size: 9px; font-weight: 600; letter-spacing: 1.8px; color: var(--text3); text-transform: uppercase; border-top: 1px solid var(--border); margin-top: 4px; }
+  .pr  { display: flex; justify-content: space-between; padding: 3px 14px; font-size: 10px; }
+  .pk  { color: var(--text3); }
+  .pv  { color: var(--text2); font-family: var(--mono); }
+  .pv.g{ color: var(--green); }
+  .pv.y{ color: var(--yellow); }
+  .pv.a{ color: var(--accent); }
+
+  /* ─── CENTER ─── */
+  .center { flex: 1; display: flex; flex-direction: column; overflow: hidden; background: var(--bg0); }
   .tabs {
-    height: 36px;
-    background: #0d0d0d;
-    border-bottom: 1px solid #1a1a1a;
-    display: flex;
-    align-items: flex-end;
-    padding: 0 16px;
-    gap: 2px;
-    flex-shrink: 0;
+    height: 34px; background: var(--bg1);
+    border-bottom: 1px solid var(--border);
+    display: flex; align-items: flex-end;
+    padding: 0 14px; gap: 0; flex-shrink: 0;
   }
   .tab {
-    padding: 6px 14px;
-    font-size: 11px;
-    color: #555;
-    cursor: pointer;
-    border-radius: 4px 4px 0 0;
-    border: 1px solid transparent;
-    border-bottom: none;
-    transition: all 0.15s;
+    padding: 5px 13px; font-size: 10px; color: var(--text3);
+    cursor: pointer; border-bottom: 2px solid transparent;
+    transition: all .15s; font-family: var(--mono);
   }
-  .tab:hover { color: #888; }
-  .tab.active {
-    color: #ccc;
-    background: #111;
-    border-color: #1e1e1e;
-  }
+  .tab:hover { color: var(--text2); }
+  .tab.on { color: var(--accent); border-bottom-color: var(--accent); }
 
-  /* CONTENT AREA */
-  .content { flex: 1; overflow: hidden; display: flex; }
-
-  /* VIEWPORT */
   .viewport {
-    flex: 1;
-    background: #0d0d0d;
-    position: relative;
+    flex: 1; position: relative;
     display: flex; align-items: center; justify-content: center;
     overflow: hidden;
   }
-  .viewport-placeholder {
-    display: flex; flex-direction: column; align-items: center; gap: 12px;
-    opacity: 0.15;
-  }
-  .viewport-placeholder .icon { font-size: 48px; }
-  .viewport-placeholder p { font-size: 12px; letter-spacing: 1px; }
-
-  /* GRID OVERLAY */
-  .grid {
+  .vgrid {
     position: absolute; inset: 0;
     background-image:
-      linear-gradient(rgba(255,255,255,0.02) 1px, transparent 1px),
-      linear-gradient(90deg, rgba(255,255,255,0.02) 1px, transparent 1px);
-    background-size: 40px 40px;
+      linear-gradient(rgba(123,112,240,0.03) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(123,112,240,0.03) 1px, transparent 1px);
+    background-size: 48px 48px;
   }
+  .vph { display: flex; flex-direction: column; align-items: center; gap: 10px; opacity: .12; z-index: 1; }
+  .vph-icon { font-size: 56px; }
+  .vph-text { font-size: 9px; letter-spacing: 4px; font-family: var(--mono); color: var(--text2); }
 
-  /* VIEWPORT TOOLBAR */
-  .viewport-toolbar {
+  /* viewport toolbar */
+  .vtbar {
     position: absolute; top: 12px; left: 12px;
-    display: flex; gap: 6px;
+    display: flex; gap: 5px; z-index: 2;
   }
-  .vt-btn {
-    height: 28px; padding: 0 10px;
-    background: #111; border: 1px solid #222;
-    color: #666; font-size: 10px; border-radius: 4px;
-    cursor: pointer; transition: all 0.15s;
-    display: flex; align-items: center; gap: 5px;
+  .vbtn {
+    height: 26px; padding: 0 9px;
+    background: rgba(10,10,20,.85); border: 1px solid var(--border2);
+    backdrop-filter: blur(8px);
+    color: var(--text3); font-size: 9px; border-radius: 5px;
+    cursor: pointer; transition: all .15s; font-family: var(--mono);
   }
-  .vt-btn:hover { background: #1a1a1a; color: #aaa; border-color: #333; }
-  .vt-btn.active { background: #1c1830; color: #7c6af7; border-color: #2d2550; }
+  .vbtn:hover { color: var(--text2); border-color: var(--border2); }
+  .vbtn.on { color: var(--accent); border-color: var(--accent-dim); background: var(--accent-glow); }
 
-  /* RIGHT PANEL */
-  .right-panel {
-    width: 260px;
-    background: #0d0d0d;
-    border-left: 1px solid #1a1a1a;
+  /* activity feed */
+  .activity {
+    position: absolute; bottom: 12px; left: 12px; right: 12px;
+    z-index: 2;
+    display: flex; flex-direction: column; gap: 4px;
+  }
+  .aline {
+    display: flex; align-items: center; gap: 7px;
+    font-size: 9px; font-family: var(--mono); color: var(--text3);
+    background: rgba(6,6,14,.8); backdrop-filter: blur(8px);
+    border: 1px solid var(--border); border-radius: 4px;
+    padding: 4px 8px; width: fit-content;
+  }
+  .aline .dot { width: 4px; height: 4px; }
+
+  /* ─── RIGHT PANEL ─── */
+  .rpanel {
+    width: 270px;
+    background: var(--bg1);
+    border-left: 1px solid var(--border);
     display: flex; flex-direction: column;
     overflow: hidden;
   }
 
-  /* AI CONSOLE */
-  .ai-messages {
-    flex: 1; overflow-y: auto; padding: 12px;
-    display: flex; flex-direction: column; gap: 8px;
+  .msgs { flex: 1; overflow-y: auto; padding: 10px; display: flex; flex-direction: column; gap: 6px; }
+  .mu {
+    align-self: flex-end;
+    background: var(--accent-glow);
+    border: 1px solid var(--accent-dim);
+    color: #c4bcff; font-size: 10px; line-height: 1.55;
+    padding: 7px 10px; border-radius: 8px 8px 2px 8px;
+    max-width: 88%;
   }
-  .msg { padding: 8px 10px; border-radius: 6px; font-size: 11px; line-height: 1.5; }
-  .msg-user { background: #1c1830; color: #a89cf7; align-self: flex-end; max-width: 85%; }
-  .msg-ai { background: #141414; color: #aaa; border: 1px solid #1e1e1e; max-width: 95%; }
-  .msg-ai code { color: #7c6af7; font-family: monospace; font-size: 10px; }
+  .ma {
+    align-self: flex-start;
+    background: var(--bg2); border: 1px solid var(--border2);
+    color: var(--text2); font-size: 10px; line-height: 1.6;
+    padding: 7px 10px; border-radius: 8px 8px 8px 2px;
+    max-width: 95%;
+  }
+  .ma code {
+    font-family: var(--mono); color: var(--accent); font-size: 9px;
+    background: var(--bg0); padding: 1px 4px; border-radius: 3px;
+  }
+  .ma .tag {
+    display: inline-flex; align-items: center; gap: 4px;
+    font-family: var(--mono); font-size: 9px;
+    background: var(--green-dim); color: var(--green);
+    padding: 1px 6px; border-radius: 3px; margin-top: 4px;
+  }
 
-  .ai-input-area {
-    padding: 10px;
-    border-top: 1px solid #1a1a1a;
-    display: flex; gap: 6px;
+  .ainput-wrap {
+    padding: 8px; border-top: 1px solid var(--border);
+    display: flex; gap: 6px; align-items: flex-end;
   }
-  .ai-input {
-    flex: 1; background: #111; border: 1px solid #1e1e1e;
-    color: #ccc; font-size: 11px; padding: 7px 10px;
-    border-radius: 6px; outline: none; resize: none; height: 34px;
-    font-family: inherit;
-    transition: border-color 0.15s;
+  .ainput {
+    flex: 1; background: var(--bg2); border: 1px solid var(--border2);
+    color: var(--text1); font-size: 10px; font-family: var(--mono);
+    padding: 7px 9px; border-radius: 6px; outline: none;
+    resize: none; height: 32px; transition: border-color .15s;
   }
-  .ai-input:focus { border-color: #3d3468; }
-  .ai-send {
-    width: 34px; height: 34px; background: #7c6af7; border: none;
-    border-radius: 6px; color: #fff; cursor: pointer; font-size: 14px;
+  .ainput:focus { border-color: var(--accent-dim); }
+  .ainput::placeholder { color: var(--text3); }
+  .asend {
+    width: 32px; height: 32px; flex-shrink: 0;
+    background: var(--accent); border: none; border-radius: 6px;
+    color: #fff; font-size: 13px; cursor: pointer;
     display: flex; align-items: center; justify-content: center;
-    transition: background 0.15s;
-    flex-shrink: 0;
+    transition: background .15s;
   }
-  .ai-send:hover { background: #6b5ce6; }
+  .asend:hover { background: #6b5ce6; }
 
-  /* SECTION DIVIDER */
-  .section-div {
-    padding: 10px 16px 6px;
-    font-size: 10px; font-weight: 600;
-    letter-spacing: 1.5px; color: #333;
-    text-transform: uppercase;
-    border-top: 1px solid #161616;
-    margin-top: 4px;
-  }
-
-  /* PROPERTY ROWS */
-  .prop-row {
-    display: flex; align-items: center; justify-content: space-between;
-    padding: 5px 12px;
-    font-size: 11px;
-  }
-  .prop-label { color: #555; }
-  .prop-value { color: #888; }
-  .prop-value.green { color: #4ade80; }
-  .prop-value.yellow { color: #facc15; }
-  .prop-value.purple { color: #a89cf7; }
-
-  /* PROGRESS BAR */
-  .progress-wrap { padding: 8px 12px; }
-  .progress-label { font-size: 10px; color: #555; margin-bottom: 5px; display: flex; justify-content: space-between; }
-  .progress-bar { height: 3px; background: #1e1e1e; border-radius: 2px; overflow: hidden; }
-  .progress-fill { height: 100%; background: #7c6af7; border-radius: 2px; transition: width 0.3s; }
-
-  /* BOTTOM STATUS */
-  .statusbar {
-    height: 22px;
-    background: #111;
-    border-top: 1px solid #1a1a1a;
+  /* ─── STATUS BAR ─── */
+  .sbar {
+    height: 20px; background: var(--bg1);
+    border-top: 1px solid var(--border);
     display: flex; align-items: center;
-    padding: 0 12px; gap: 16px;
-    flex-shrink: 0;
+    padding: 0 12px; gap: 16px; flex-shrink: 0;
   }
-  .status-item { display: flex; align-items: center; gap: 5px; font-size: 10px; color: #444; }
-  .status-item .status-dot { width: 5px; height: 5px; }
+  .sc { display: flex; align-items: center; gap: 4px; font-size: 9px; color: var(--text3); font-family: var(--mono); }
 
-  /* SCROLLBAR */
-  ::-webkit-scrollbar { width: 4px; }
+  /* scrollbar */
+  ::-webkit-scrollbar { width: 3px; }
   ::-webkit-scrollbar-track { background: transparent; }
-  ::-webkit-scrollbar-thumb { background: #222; border-radius: 2px; }
-
-  /* JOB CARD */
-  .job-card {
-    margin: 8px 12px;
-    background: #111; border: 1px solid #1e1e1e;
-    border-radius: 6px; padding: 10px;
-  }
-  .job-title { font-size: 11px; color: #888; margin-bottom: 6px; display: flex; justify-content: space-between; }
-  .job-title span { color: #facc15; font-size: 10px; }
+  ::-webkit-scrollbar-thumb { background: var(--border2); border-radius: 2px; }
 </style>
 </head>
 <body>
+<div class="shell">
 
-<!-- TOP BAR -->
-<div class="topbar">
-  <div class="logo">STUDIO</div>
-  <div class="topbar-sep"></div>
-  <div class="project-name">Proje: <span>bursa-oyun</span></div>
-  <div class="topbar-right">
-    <div class="status-dot dot-green"></div>
-    <div class="status-label">Backend</div>
-    <div class="topbar-sep"></div>
-    <div class="status-dot dot-green"></div>
-    <div class="status-label">Blender</div>
-    <div class="topbar-sep"></div>
-    <div class="status-dot dot-yellow"></div>
-    <div class="status-label">UE5</div>
-    <div class="topbar-sep"></div>
-    <div class="status-dot dot-gray"></div>
-    <div class="status-label">LingBot</div>
-  </div>
-</div>
-
-<div class="main">
-
-  <!-- SIDEBAR -->
-  <div class="sidebar">
-    <button class="nav-btn active" title="">
-      📁
-      <span class="tooltip">Projeler</span>
-    </button>
-    <button class="nav-btn">
-      🎨
-      <span class="tooltip">Blender</span>
-    </button>
-    <button class="nav-btn">
-      🎮
-      <span class="tooltip">Unreal Engine 5</span>
-    </button>
-    <button class="nav-btn">
-      🤖
-      <span class="tooltip">AI Asistan</span>
-    </button>
-    <button class="nav-btn">
-      📡
-      <span class="tooltip">3D Tarama</span>
-    </button>
-    <button class="nav-btn">
-      📦
-      <span class="tooltip">Export</span>
-    </button>
-    <div class="sidebar-bottom">
-      <button class="nav-btn">
-        ⚙️
-        <span class="tooltip">Ayarlar</span>
-      </button>
+  <!-- TOP BAR -->
+  <div class="bar">
+    <div class="logo">STUDIO</div>
+    <div class="bar-div"></div>
+    <div class="breadcrumb">/ <b>bursa-oyun</b> / arazi</div>
+    <div class="bar-right">
+      <div class="chip"><div class="dot d-on"></div> backend</div>
+      <div class="chip"><div class="dot d-on"></div> blender</div>
+      <div class="chip"><div class="dot d-warn"></div> ue5</div>
+      <div class="chip"><div class="dot d-off"></div> lingbot</div>
     </div>
   </div>
 
-  <!-- LEFT PANEL: Projects -->
-  <div class="left-panel">
-    <div class="panel-header">
-      Projeler
-      <button>+</button>
-    </div>
-    <div class="project-list">
-      <div class="project-item active">
-        <div class="project-icon">🗺️</div>
-        <div class="project-info">
-          <div class="project-title">bursa-oyun</div>
-          <div class="project-meta">Son: arazi kurulumu</div>
-        </div>
-      </div>
-      <div class="project-item">
-        <div class="project-icon">🏛️</div>
-        <div class="project-info">
-          <div class="project-title">tarihi-merkez</div>
-          <div class="project-meta">Son: 3 gün önce</div>
-        </div>
-      </div>
-      <div class="project-item">
-        <div class="project-icon">🌄</div>
-        <div class="project-info">
-          <div class="project-title">uludag-terrain</div>
-          <div class="project-meta">Son: 1 hafta önce</div>
-        </div>
+  <div class="mid">
+
+    <!-- SIDEBAR -->
+    <div class="sidebar">
+      <button class="sb-btn on">📁<span class="tip">Projeler</span></button>
+      <button class="sb-btn">🎨<span class="tip">Blender</span></button>
+      <button class="sb-btn">🎮<span class="tip">Unreal Engine 5</span></button>
+      <button class="sb-btn">🤖<span class="tip">AI Asistan</span></button>
+      <button class="sb-btn">📡<span class="tip">3D Tarama</span></button>
+      <button class="sb-btn">📦<span class="tip">Export</span></button>
+      <div class="sb-foot">
+        <button class="sb-btn">⚙️<span class="tip">Ayarlar</span></button>
       </div>
     </div>
 
-    <div class="section-div">Aktif İşler</div>
-    <div class="job-card">
-      <div class="job-title">
-        Bursa DEM → UE5 Import
-        <span>%73</span>
+    <!-- LEFT PANEL -->
+    <div class="lpanel">
+      <div class="ph">Projeler <button class="ph-add">+</button></div>
+      <div class="plist">
+        <div class="pi on">
+          <div class="pi-ico">🗺️</div>
+          <div>
+            <div class="pi-name">bursa-oyun</div>
+            <div class="pi-sub">main · 14 commit</div>
+          </div>
+        </div>
+        <div class="pi">
+          <div class="pi-ico">🏛️</div>
+          <div>
+            <div class="pi-name">tarihi-merkez</div>
+            <div class="pi-sub">main · 3 commit</div>
+          </div>
+        </div>
+        <div class="pi">
+          <div class="pi-ico">🌄</div>
+          <div>
+            <div class="pi-name">uludag-terrain</div>
+            <div class="pi-sub">main · 7 commit</div>
+          </div>
+        </div>
       </div>
-      <div class="progress-bar">
-        <div class="progress-fill" style="width: 73%"></div>
+
+      <div class="sec">Aktif İş</div>
+      <div class="jcard">
+        <div class="jtop">
+          <div class="jtitle">Bursa DEM → UE5</div>
+          <div class="jpct">%73</div>
+        </div>
+        <div class="pbar"><div class="pfill" style="width:73%"></div></div>
+        <div class="jmsg">heightmap scale hesaplanıyor...</div>
       </div>
+
+      <div class="sec">Git</div>
+      <div class="pr"><span class="pk">branch</span><span class="pv a">main</span></div>
+      <div class="pr"><span class="pk">staged</span><span class="pv y">3 dosya</span></div>
+      <div class="pr"><span class="pk">son commit</span><span class="pv">arazi eklendi</span></div>
+
+      <div class="sec">Sistem</div>
+      <div class="pr"><span class="pk">vram</span><span class="pv g">2.1 / 4 GB</span></div>
+      <div class="pr"><span class="pk">model</span><span class="pv">llama3.2:3b</span></div>
     </div>
 
-    <div class="section-div">Git</div>
-    <div class="prop-row"><span class="prop-label">Branch</span><span class="prop-value purple">main</span></div>
-    <div class="prop-row"><span class="prop-label">Değişiklik</span><span class="prop-value yellow">3 dosya</span></div>
-    <div class="prop-row"><span class="prop-label">Son commit</span><span class="prop-value">arazi eklendi</span></div>
-  </div>
-
-  <!-- CENTER -->
-  <div class="center">
-    <div class="tabs">
-      <div class="tab active">Viewport</div>
-      <div class="tab">Blender</div>
-      <div class="tab">UE5 Konsol</div>
-      <div class="tab">Terminal</div>
-    </div>
-    <div class="content">
+    <!-- CENTER -->
+    <div class="center">
+      <div class="tabs">
+        <div class="tab on">viewport</div>
+        <div class="tab">blender</div>
+        <div class="tab">ue5 konsol</div>
+        <div class="tab">terminal</div>
+        <div class="tab">git log</div>
+      </div>
       <div class="viewport">
-        <div class="grid"></div>
-        <div class="viewport-toolbar">
-          <button class="vt-btn active">▶ Perspektif</button>
-          <button class="vt-btn">Üst</button>
-          <button class="vt-btn">Yan</button>
-          <button class="vt-btn">🔲 Wireframe</button>
+        <div class="vgrid"></div>
+        <div class="vtbar">
+          <button class="vbtn on">perspektif</button>
+          <button class="vbtn">üst</button>
+          <button class="vbtn">yan</button>
+          <button class="vbtn">wireframe</button>
         </div>
-        <div class="viewport-placeholder">
-          <div class="icon">🗻</div>
-          <p>BURSA TOPOGRAFYASı</p>
+        <div class="vph">
+          <div class="vph-icon">🗻</div>
+          <div class="vph-text">BURSA TOPOGRAFYASı</div>
+        </div>
+        <div class="activity">
+          <div class="aline"><div class="dot d-on"></div> UE5 → Landscape import başladı</div>
+          <div class="aline"><div class="dot d-on"></div> Z Scale: 477 · Min: 100m · Max: 2543m</div>
+          <div class="aline"><div class="dot d-warn"></div> Nilüfer nehir verisi bekleniyor...</div>
         </div>
       </div>
     </div>
+
+    <!-- RIGHT PANEL: AI -->
+    <div class="rpanel">
+      <div class="ph">Claude · AI Asistan</div>
+      <div class="msgs">
+        <div class="ma">Merhaba. Bursa topografyasını UE5'e aktarmaya hazırım. Ne yapmamı istersin?</div>
+        <div class="mu">Uludağ yükseklik verilerini doğru hesapla ve import et</div>
+        <div class="ma">
+          Copernicus DEM verisi indirildi.<br><br>
+          Min: <code>100m</code> · Maks: <code>2543m</code><br>
+          Hesaplanan Z Scale: <code>477</code><br><br>
+          UE5 Landscape import başlatılıyor...<br>
+          <span class="tag">✓ Blender MCP bağlı</span>
+        </div>
+        <div class="mu">Nilüfer nehrini de ekle</div>
+        <div class="ma">OSM'den Nilüfer + Gökdere verisi çekiliyor. UE5 Water System ile entegre edeceğim.</div>
+      </div>
+      <div class="ainput-wrap">
+        <textarea class="ainput" placeholder="komut yaz..."></textarea>
+        <button class="asend">↑</button>
+      </div>
+    </div>
+
   </div>
 
-  <!-- RIGHT PANEL: AI -->
-  <div class="right-panel">
-    <div class="panel-header">AI Asistan</div>
-    <div class="ai-messages">
-      <div class="msg msg-ai">
-        Merhaba. Bursa topografyasını UE5'e aktarmaya hazırım. Ne yapmamı istersin?
-      </div>
-      <div class="msg msg-user">
-        Uludağ yükseklik verilerini doğru hesapla ve import et
-      </div>
-      <div class="msg msg-ai">
-        Bursa DEM verisi indirildi.<br><br>
-        Min: <code>100m</code> — Maks: <code>2543m</code><br>
-        Z Scale: <code>477</code><br><br>
-        UE5 Landscape import başlatılıyor...
-      </div>
-    </div>
-    <div class="ai-input-area">
-      <textarea class="ai-input" placeholder="Komut yaz..."></textarea>
-      <button class="ai-send">↑</button>
-    </div>
-
-    <div class="section-div">Sistem</div>
-    <div class="prop-row"><span class="prop-label">GPU</span><span class="prop-value">GTX 1650 Ti</span></div>
-    <div class="prop-row"><span class="prop-label">VRAM</span><span class="prop-value green">2.1 / 4 GB</span></div>
-    <div class="prop-row"><span class="prop-label">Ollama</span><span class="prop-value green">llama3.2:3b</span></div>
-    <div class="prop-row"><span class="prop-label">Blender</span><span class="prop-value green">4.2 LTS</span></div>
-    <div class="prop-row"><span class="prop-label">UE5</span><span class="prop-value yellow">Bağlanıyor...</span></div>
+  <!-- STATUS BAR -->
+  <div class="sbar">
+    <div class="sc"><div class="dot d-on"></div> localhost:8000</div>
+    <div class="sc"><div class="dot d-on"></div> redis</div>
+    <div class="sc"><div class="dot d-on"></div> git:bursa-oyun</div>
+    <div class="sc"><div class="dot d-off"></div> tailscale:kapalı</div>
   </div>
 
 </div>
-
-<!-- STATUS BAR -->
-<div class="statusbar">
-  <div class="status-item"><div class="status-dot dot-green"></div> localhost:8000</div>
-  <div class="status-item"><div class="status-dot dot-green"></div> Redis bağlı</div>
-  <div class="status-item"><div class="status-dot dot-green"></div> Git: bursa-oyun</div>
-  <div class="status-item"><div class="status-dot dot-gray"></div> Tailscale: kapalı</div>
-</div>
-
 </body>
 </html>
